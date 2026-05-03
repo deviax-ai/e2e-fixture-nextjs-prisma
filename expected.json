@@ -1,0 +1,39 @@
+{
+  "stack_bucket": "node-nextjs-prisma-postgres",
+  "stack_slug": "nextjs",
+  "external": {
+    "ai_source": "hand",
+    "complexity": "standard"
+  },
+  "must_find_issues": [
+    { "source": "regex", "title_contains": "secret" }
+  ],
+  "required_artifacts": [
+    "Dockerfile",
+    ".deviax/k8s/deployment.yaml",
+    ".deviax/k8s/service.yaml"
+  ],
+  "required_questions": [
+    "subdomain"
+  ],
+  "must_reach_phase": "live",
+  "assert": {
+    "outcome": "success",
+    "url_status_class": "2xx",
+    "url_status_after_1h": "not_5xx"
+  },
+  "budget": {
+    "max_ai_cost_usd": 1.50,
+    "max_duration_seconds": 1200,
+    "max_user_questions": 5
+  },
+  "seeded_problems": [
+    {
+      "file": "app/api/notes/route.ts",
+      "line": 5,
+      "type": "hardcoded_secret",
+      "marker_substring": "dev-only-notes-secret-change-me"
+    }
+  ],
+  "notes": "Phase 2 — Next.js + Prisma + managed Postgres. Exercises both Node-static-build and managed-DB-with-migrations paths in one fixture. Pipeline must provision Postgres, inject DATABASE_URL, run `prisma migrate deploy` before the app starts, and ideally patch next.config.js to add output: 'standalone' for the smaller production image."
+}
